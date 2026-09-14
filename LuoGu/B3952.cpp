@@ -1,23 +1,20 @@
 #include<iostream>
 #include<vector>
 using namespace std;
-void B3922(){
-    int N,M;
-    cin>>N>>M;
-    for(int i=1;i<=N;i++){
-        if(i%M==0){
-            continue;
-        }
-        else{
-            cout<<i<<endl;
-        }
-    }
+void B3952(){
+    int m;
+    cin>>m;
+    int res1,res2;
+    res1=m/13;
+    res2=m%13;
+    cout<<res1<<endl;
+    cout<<res2<<endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    B3922();
+    B3952();
     return 0;
 }
 #endif
