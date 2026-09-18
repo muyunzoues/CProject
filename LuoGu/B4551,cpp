@@ -1,0 +1,22 @@
+#include<iostream>
+#include<vector>
+#include <iomanip>
+#include <cmath>
+#include <climits>
+using namespace std;
+void B4551(){
+    int ab,ac,cb1,cb2;
+    cin>>ab>>ac>>cb1>>cb2;
+    int tmp1=ac+cb1;
+    int tmp2=ac+cb2;
+    int res=min(ab,min(tmp1,tmp2));
+    cout<<res<<endl;
+}
+
+#ifndef LUOGU_MAIN
+int main()
+{
+    B4551();
+    return 0;
+}
+#endif
