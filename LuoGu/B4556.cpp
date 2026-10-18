@@ -11,7 +11,7 @@ using namespace std;
 void B4556()
 {
     int n;
-    cin>>n;
+    cin >> n;
     string ss;
     cin >> ss;
     for (int i = 0; i < ss.length(); i++)

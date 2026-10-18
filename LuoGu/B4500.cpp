@@ -10,12 +10,19 @@ using namespace std;
 
 void B4500()
 {
-    string ss1,ss2,ss3;
-    cin>>ss1>>ss2>>ss3;
-    int dis=ss2[0]-ss1[0];
-    string temp1=ss3.substr(dis,ss3.length()-dis);
-    string res=temp1+ss3.substr(0,dis);
-    cout<<res<<endl;
+    string ss1, ss2, ss3;
+    cin >> ss1 >> ss2 >> ss3;
+    int dis = ss2[0] - ss1[0];
+    for (int i = 0; i < ss3.length(); i++)
+    {
+        if (ss3[i] >= 'A' && ss3[i] <= 'Z')
+        {
+            int offset = ss3[i] - 'A';
+            offset = ((offset - dis) % 26 + 26) % 26; // 循环位移
+            ss3[i] = 'A' + offset;
+        }
+    }
+    cout << ss3 << endl;
 }
 
 #ifndef LUOGU_MAIN
