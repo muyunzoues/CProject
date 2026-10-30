@@ -7,7 +7,7 @@
 #include <unordered_map>
 using namespace std;
 
-//保留元素的序号进行排序，可以采用结构体存储的方式
+// 保留元素的序号进行排序，可以采用结构体存储的方式
 struct Node
 {
     double val;
@@ -17,7 +17,7 @@ bool cmp(const Node &a, const Node &b)
 {
     if (a.val != b.val)
         return a.val > b.val; // 按值由高到低排序
-    return a.id < b.id;       
+    return a.id < b.id;
 }
 
 void B4557()
@@ -40,10 +40,10 @@ void B4557()
         res[i].val = w[i] / h[i] / h[i];
         res[i].id = i + 1;
     }
-    sort(res.begin(), res.end(),cmp);
+    sort(res.begin(), res.end(), cmp);
     for (int i = 0; i < n; i++)
     {
-        cout <<res[i].id<<" ";
+        cout << res[i].id << " ";
     }
 }
 

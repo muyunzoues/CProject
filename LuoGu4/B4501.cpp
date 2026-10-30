@@ -7,23 +7,6 @@
 #include <unordered_map>
 using namespace std;
 
-struct Commodity
-{
-    string name;
-    int price;
-    int v;
-};
-
-// a是否应排在b前面
-bool cmp(const Commodity &a, const Commodity &b)
-{
-    if (a.v != b.v)
-        return a.v < b.v; // 优先级不同，直接比优先级
-    if (a.price != b.price)
-        return a.price < b.price; // 优先级相同，比价格
-    return a.name < b.name;       // 都相同，比名字
-}
-
 void B4451()
 {
     int n, m;
