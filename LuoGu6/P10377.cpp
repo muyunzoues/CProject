@@ -9,43 +9,49 @@
 #include <numeric>
 using namespace std;
 
-void P10108()
+int n;
+int a[10], b[10];
+bool vis[10];
+int ans = INT_MAX;
+
+void dfs(int step, int pre, int len)
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> numsa(m);
-    vector<int> numsb(n);
-    for (int i = 0; i < m; i++)
+    if(step == n)
     {
-        cin >> numsa[i];
+        ans = min(ans, len);
+        return;
     }
-    for (int i = 0; i < n; i++)
+    for(int i = 1; i <= n; i++)
     {
-        cin >> numsb[i];
-    }
-    // dp[i] 表示到达 i 位置的最大分数
-    vector<int> dp(n + 1, INT_MIN);
-    dp[0] = numsb[0];
-    for (int i = 0; i < n; i++)
-    {
-        // 如果当前位置不可达，跳过
-        if (dp[i] == INT_MIN)
-            continue;
-        // 尝试使用每个通道
-        for (int j = 0; j < m; j++)
+        if(!vis[i])
         {
-            int next = min(i + numsa[j], n);// 超过 n 的都视为 n
-            int score = next == n ? 0 : numsb[next];
-            dp[next] = max(dp[next], dp[i] + score);// 更新到达 next 位置的最大分数
+            vis[i] = true;
+            int add;
+            if(pre == 0)
+                add = 1;
+            else
+                add = max(a[i], b[pre]) + 1;
+            dfs(step + 1, i, len + add);
+            vis[i] = false;
         }
     }
-    cout << dp[n] << endl;
+}
+
+void P10377()
+{
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
+    for(int i = 1; i <= n; i++)
+        cin >> b[i];
+    dfs(0, 0, 0);
+    cout << ans << endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    P10108();
+    P10377();
     return 0;
 }
 #endif

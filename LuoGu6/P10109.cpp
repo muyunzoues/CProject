@@ -8,42 +8,63 @@
 #include <set>
 #include <numeric>
 using namespace std;
+vector<int> parent_node(305);
 
-void B3873()
+// 判断 x 是否能管理 y
+bool canManage(int x, int y)
 {
-    int n, L;
-    cin >> n >> L;
-    // dp[j] 表示容量达到 j（或超过 j 视为 j）时的最小花费
-    vector<long long> dp(L + 1, LONG_LONG_MAX);
-    dp[0] = 0;
-    for (int i = 0; i < n; i++)
+    if (x == y)
+        return true;
+    if (y == 0)
+        return false;
+    return canManage(x, parent_node[y]);
+}
+
+void P10108()
+{
+    int n;
+    cin >> n;
+    parent_node[0] = 0;
+    for (int i = 1; i < n; i++)
     {
-        long long c, l;
-        cin >> c >> l;
-        for (int j = l; j >= 0; j--)
+        cin >> parent_node[i];
+    }
+    int q;
+    cin >> q;
+    while (q--)
+    {
+        int m;
+        cin >> m;
+        vector<int> participants(m);
+        for (int i = 0; i < m; i++)
         {
-            if (dp[j] == LONG_LONG_MAX)
-            {
-                continue;
-            }
-            int nj = min(j + (int)l, L); // 超过 L 的都视为 L
-            dp[nj] = min(dp[nj], dp[j] + c);
+            cin >> participants[i];
         }
-    }
-    if (dp[L] == LONG_LONG_MAX)
-    {
-        cout << "no solution" << endl;
-    }
-    else
-    {
-        cout << dp[L] << endl;
+        // 从后往前遍历，找到编号最大的员工，看他是否能管理所有参会人员
+        for (int i = n - 1; i >= 0; i--)
+        {
+            bool flag = true;
+            for (int j = 0; j < m; j++)
+            {
+                if (!canManage(i, participants[j]))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                cout << i << endl;
+                break;
+            }
+        }
     }
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    B3873();
+    P10108();
     return 0;
 }
 #endif

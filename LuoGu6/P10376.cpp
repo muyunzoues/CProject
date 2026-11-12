@@ -9,35 +9,31 @@
 #include <numeric>
 using namespace std;
 
-void P10108()
+const int MOD = 1e9 + 7;
+
+void P10376()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> numsa(m);
-    vector<int> numsb(n);
-    for (int i = 0; i < m; i++)
+    int n, a, b, c;
+    cin >> n >> a >> b >> c;
+    vector<long long> dp(n + 1, 0);
+    for (int i = 0; i <= c && i <= n; i++)
     {
-        cin >> numsa[i];
+        dp[i] = 1;
     }
-    for (int i = 0; i < n; i++)
+    for (int i = c + 1; i <= n; i++)
     {
-        cin >> numsb[i];
-    }
-    // dp[i] 表示到达 i 位置的最大分数
-    vector<int> dp(n + 1, INT_MIN);
-    dp[0] = numsb[0];
-    for (int i = 0; i < n; i++)
-    {
-        // 如果当前位置不可达，跳过
-        if (dp[i] == INT_MIN)
-            continue;
-        // 尝试使用每个通道
-        for (int j = 0; j < m; j++)
-        {
-            int next = min(i + numsa[j], n);// 超过 n 的都视为 n
-            int score = next == n ? 0 : numsb[next];
-            dp[next] = max(dp[next], dp[i] + score);// 更新到达 next 位置的最大分数
-        }
+        long long ways = 0;
+        if (i - a <= c)
+            ways = (ways + 1) % MOD;
+        else
+            ways = (ways + dp[i - a]) % MOD;
+
+        if (i - b <= c)
+            ways = (ways + 1) % MOD;
+        else
+            ways = (ways + dp[i - b]) % MOD;
+
+        dp[i] = ways;
     }
     cout << dp[n] << endl;
 }
@@ -45,7 +41,7 @@ void P10108()
 #ifndef LUOGU_MAIN
 int main()
 {
-    P10108();
+    P10376();
     return 0;
 }
 #endif

@@ -20,7 +20,7 @@ void B3873()
     {
         long long c, l;
         cin >> c >> l;
-        for (int j = l; j >= 0; j--)
+        for (int j = L; j >= 0; j--)
         {
             if (dp[j] == LONG_LONG_MAX)
             {

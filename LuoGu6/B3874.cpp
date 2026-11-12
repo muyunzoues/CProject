@@ -8,42 +8,52 @@
 #include <set>
 #include <numeric>
 using namespace std;
+const int MAXN = 300005;
+int a[MAXN], tmp[MAXN];
+long long ans = 0;
 
-void B3873()
+void mergeSort(int l, int r)
 {
-    int n, L;
-    cin >> n >> L;
-    // dp[j] 表示容量达到 j（或超过 j 视为 j）时的最小花费
-    vector<long long> dp(L + 1, LONG_LONG_MAX);
-    dp[0] = 0;
-    for (int i = 0; i < n; i++)
+    if (l >= r)
+        return;
+    int mid = l + (r - l) / 2;
+    mergeSort(l, mid);
+    mergeSort(mid + 1, r);
+    int i = l, j = mid + 1, k = l;
+    while (i <= mid && j <= r)
     {
-        long long c, l;
-        cin >> c >> l;
-        for (int j = l; j >= 0; j--)
+        if (a[i] < a[j])
+        { // 左 < 右，左段剩余元素都 < a[j]
+            ans += (mid - i + 1);
+            tmp[k++] = a[j++];
+        }
+        else
         {
-            if (dp[j] == LONG_LONG_MAX)
-            {
-                continue;
-            }
-            int nj = min(j + (int)l, L); // 超过 L 的都视为 L
-            dp[nj] = min(dp[nj], dp[j] + c);
+            tmp[k++] = a[i++];
         }
     }
-    if (dp[L] == LONG_LONG_MAX)
-    {
-        cout << "no solution" << endl;
-    }
-    else
-    {
-        cout << dp[L] << endl;
-    }
+    while (i <= mid)
+        tmp[k++] = a[i++];
+    while (j <= r)
+        tmp[k++] = a[j++];
+    for (int p = l; p <= r; p++)
+        a[p] = tmp[p];
+}
+
+void B3874()
+{
+    int N;
+    cin >> N;
+    for (int i = 0; i < N; i++)
+        cin >> a[i];
+    mergeSort(0, N - 1);
+    cout << ans << endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    B3873();
+    B3874();
     return 0;
 }
 #endif
