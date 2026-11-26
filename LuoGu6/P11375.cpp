@@ -10,7 +10,7 @@
 #include <stack>
 using namespace std;
 
-//通过栈化简操作，当上次操作是LR，下次操作是U时，两次操作可以抵消。
+// 通过栈化简操作，当上次操作是LR，下次操作是U时，两次操作可以抵消。
 void P11375()
 {
     long long n, s;
@@ -18,33 +18,39 @@ void P11375()
     string ss;
     cin >> ss;
     vector<char> stk;
-    for(char c:ss){
-        if(c == 'U'){
-            if(!stk.empty() && (stk.back()=='L' || stk.back()=='R')){
+    for (char c : ss)
+    {
+        if (c == 'U')
+        {
+            if (!stk.empty() && (stk.back() == 'L' || stk.back() == 'R'))
+            {
                 stk.pop_back();
             }
-            else{
+            else
+            {
                 stk.push_back('U');
             }
         }
-        else{
+        else
+        {
             stk.push_back(c);
         }
     }
-    for (int i = 0; i < n; i++)
+    // 用化简后的栈模拟，此时不会发生溢出
+    for (char c : stk)
     {
-        if (stk[i] == 'U' && s>1)
+        if (c == 'U')
         {
-            s /= 2;
+            if (s > 1)
+                s /= 2; // 根节点 1 的父节点还是 1，题目说“否则不移动”
         }
-        else if (stk[i] == 'L')
+        else if (c == 'L')
         {
             s *= 2;
         }
-        else if (stk[i] == 'R')
+        else if (c == 'R')
         {
-            s *= 2;
-            s += 1;
+            s = s * 2 + 1;
         }
     }
     cout << s << endl;

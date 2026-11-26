@@ -9,49 +9,56 @@
 #include <numeric>
 #include <stack>
 using namespace std;
-long long maxDist = 0;
-struct way
-{
-    int v;
-    long long l;
-};
-vector<way> ways[100005];
-void dfs(int u, int fa, long long curDist)
-{
-    maxDist = max(maxDist, curDist);
-    for (auto &[v, w] : ways[u])
-    {
-        if (v == fa)
-        {
-            continue;
-        }
-        dfs(v, u, curDist + w);
-    }
-}
-//要得到从跟出发到所有节点的路程最短，且最后不返回跟，可以通过所有节点路程的总和*2减去到叶节点最大路程得到，得到从跟到叶的最大路径可以通过深度优先搜索dfs
-//记录全局变量maxDist，深搜一次就maxDist加上当前路径，下一次深搜就比较，最后就能获得最大距离。
-void P14076()
+
+void P15800()
 {
     int n;
     cin >> n;
-    long long sum = 0;
-    for (int i = 0; i < n - 1; i++)
+
+    vector<long long> a(n + 1), b(n + 1);
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
+    for (int i = 1; i <= n; i++)
+        cin >> b[i];
+
+    // dp[i]：强制选位置 i 时的最大分数
+    vector<long long> dp(n + 1, 0);
+
+    // activate[t] 存的是所有 reach[j] == t 的 j 的 dp[j]
+    // reach[j] = j + max(1, b[j])
+    vector<vector<long long>> activate(n + 2);
+
+    long long best = 0; // 所有已激活的 dp[j] 的最大值（0 表示“不选前驱”）
+    long long ans = 0;
+
+    for (int i = 1; i <= n; i++)
     {
-        int u, v;
-        long long w;
-        cin >> u >> v >> w;
-        ways[u].push_back({v, w});
-        ways[v].push_back({u, w});
-        sum += w;
+        // 1. 激活所有 reach[j] == i 的 j
+        for (long long val : activate[i])
+        {
+            best = max(best, val);
+        }
+
+        // 2. 计算 dp[i]：选 i 作为当前结尾
+        dp[i] = a[i] + best;
+        ans = max(ans, dp[i]);
+
+        // 3. 计算 i 的 reach，等到 reach 时刻再激活 dp[i]
+        int reach = i + max(1LL, b[i]);
+        if (reach <= n)
+        {
+            activate[reach].push_back(dp[i]);
+        }
+        // 如果 reach > n，说明选 i 之后跳不到任何位置，不需要激活
     }
-    dfs(1, 0, 0);
-    cout << 2 * sum - maxDist << endl;
+
+    cout << ans << endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    P14076();
+    P15800();
     return 0;
 }
 #endif

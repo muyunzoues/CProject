@@ -27,18 +27,21 @@ void P11963()
     long long maxSum = nums[0], minSum = nums[0];
     for (int i = 1; i < n; i++)
     {
-        dpMax[i]=max(nums[i],dpMax[i-1]+nums[i]);
-        dpMin[i]=min(nums[i],dpMin[i-1]+nums[i]);
-        maxSum=max(maxSum,dpMax[i]);
-        minSum=min(minSum,dpMin[i]);
+        dpMax[i] = max(nums[i], dpMax[i - 1] + nums[i]);
+        dpMin[i] = min(nums[i], dpMin[i - 1] + nums[i]);
+        maxSum = max(maxSum, dpMax[i]);
+        minSum = min(minSum, dpMin[i]);
     }
     long long res;
-    if(maxSum<0){
-        res=maxSum;
+    if (maxSum < 0)
+    {
+        res = maxSum;
     }
-    else{
-        res=max(maxSum,maxminSumSum-);
+    else
+    {
+        res = max(maxSum, total - minSum);
     }
+    cout << res << endl;
 }
 
 #ifndef LUOGU_MAIN

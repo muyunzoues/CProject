@@ -9,49 +9,69 @@
 #include <numeric>
 #include <stack>
 using namespace std;
-long long maxDist = 0;
-struct way
+const int MAXN = 100005;
+vector<int> children[MAXN];
+long long c[MAXN];    // 染色代价
+long long cost[MAXN]; // 子树最小覆盖代价
+void dfs(int u)
 {
-    int v;
-    long long l;
-};
-vector<way> ways[100005];
-void dfs(int u, int fa, long long curDist)
-{
-    maxDist = max(maxDist, curDist);
-    for (auto &[v, w] : ways[u])
+    if (children[u].empty())
     {
-        if (v == fa)
-        {
-            continue;
-        }
-        dfs(v, u, curDist + w);
+        cost[u] = c[u];
+        return;
     }
+    long long sum = 0;
+    for (int i : children[u])
+    {
+        dfs(i);
+        sum += cost[i];
+    }
+    cost[u] = min(c[u], sum);
 }
-//要得到从跟出发到所有节点的路程最短，且最后不返回跟，可以通过所有节点路程的总和*2减去到叶节点最大路程得到，得到从跟到叶的最大路径可以通过深度优先搜索dfs
-//记录全局变量maxDist，深搜一次就maxDist加上当前路径，下一次深搜就比较，最后就能获得最大距离。
-void P14076()
+void P14919()
 {
     int n;
     cin >> n;
-    long long sum = 0;
-    for (int i = 0; i < n - 1; i++)
-    {
-        int u, v;
-        long long w;
-        cin >> u >> v >> w;
-        ways[u].push_back({v, w});
-        ways[v].push_back({u, w});
-        sum += w;
+    vector<vector<int>> children(n + 1); // 动态分配，只占 n+1 个 vector
+    vector<long long> c(n + 1);
+    vector<long long> cost(n + 1);
+
+    for (int i = 2; i <= n; i++)
+    { // 注意：父节点输入从节点 2 开始
+        int f;
+        cin >> f;
+        children[f].push_back(i);
     }
-    dfs(1, 0, 0);
-    cout << 2 * sum - maxDist << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> c[i];
+    }
+
+    // 逆序递推，不需要 DFS，避免递归栈开销
+    for (int i = n; i >= 1; i--)
+    {
+        if (children[i].empty())
+        {
+            cost[i] = c[i];
+        }
+        else
+        {
+            long long sum = 0;
+            for (int v : children[i])
+            {
+                sum += cost[v];
+            }
+            cost[i] = min(c[i], sum);
+        }
+    }
+
+    cout << cost[1] << endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    P14076();
+    P14919();
     return 0;
 }
 #endif

@@ -10,41 +10,32 @@
 #include <stack>
 using namespace std;
 
-void P11963()
+void P13015()
 {
     int n;
     cin >> n;
-    vector<long long> nums(n);
-    long long total = 0;
-    for (int i = 0; i < n; i++)
+    int a[1005];
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
+
+    int dp[1005] = {0}; // dp[0] = 0，0个人价值为0
+
+    // 外层枚举容量 i (总人数)，内层枚举最后一个小组的人数 j
+    for (int i = 1; i <= n; i++)
     {
-        cin >> nums[i];
-        total += nums[i];
+        for (int j = 1; j <= i; j++)
+        {
+            dp[i] = max(dp[i], dp[i - j] + a[j]);
+        }
     }
-    vector<long long> dpMax(n), dpMin(n);
-    dpMax[0] = nums[0];
-    dpMin[0] = nums[0];
-    long long maxSum = nums[0], minSum = nums[0];
-    for (int i = 1; i < n; i++)
-    {
-        dpMax[i]=max(nums[i],dpMax[i-1]+nums[i]);
-        dpMin[i]=min(nums[i],dpMin[i-1]+nums[i]);
-        maxSum=max(maxSum,dpMax[i]);
-        minSum=min(minSum,dpMin[i]);
-    }
-    long long res;
-    if(maxSum<0){
-        res=maxSum;
-    }
-    else{
-        res=max(maxSum,maxminSumSum-);
-    }
+
+    cout << dp[n] << endl;
 }
 
 #ifndef LUOGU_MAIN
 int main()
 {
-    P11963();
+    P13015();
     return 0;
 }
 #endif
